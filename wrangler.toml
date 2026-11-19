@@ -1,0 +1,25 @@
+name = "statpulse-bot"
+main = "src/index.js"
+compatibility_date = "2025-06-01"
+
+# Cron: every minute. Drains the notification outbox, syncs statistics every
+# 5 minutes, runs hourly maintenance. Free plan allows cron triggers.
+[triggers]
+crons = ["* * * * *"]
+
+[observability]
+enabled = true
+
+# Create with: npx wrangler d1 create statpulse-db
+# then paste the printed database_id below.
+[[d1_databases]]
+binding = "DB"
+database_name = "statpulse-db"
+database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+migrations_dir = "migrations"
+
+# SECRETS (never put these in this file). Set with `wrangler secret put NAME`:
+#   BOT_TOKEN       Telegram bot token from @BotFather
+#   WEBHOOK_SECRET  random string [A-Za-z0-9_-], 16-64 chars (Telegram echoes it on every update)
+#   SETUP_KEY       random string that protects the /register endpoint
+#   ADMIN_IDS       comma-separated numeric Telegram user IDs of owners, e.g. 123456789,987654321
